@@ -6,22 +6,40 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx lib/db/migrate.ts",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.2.3",
+    "better-sqlite3": "^12.4.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "drizzle-orm": "^0.44.6",
+    "lucide-react": "^0.546.0",
+    "next": "15.5.6",
+    "next-auth": "^5.0.0-beta.29",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "next": "15.5.6"
+    "tailwind-merge": "^3.3.1",
+    "uuidv7": "^1.0.2",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
+    "drizzle-kit": "^0.31.5",
     "eslint": "^9",
     "eslint-config-next": "15.5.6",
-    "@eslint/eslintrc": "^3"
+    "tailwindcss": "^4",
+    "tsx": "^4.20.6",
+    "typescript": "^5"
   }
 }
