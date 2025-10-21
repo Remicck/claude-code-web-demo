@@ -7,6 +7,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { getTenants } from "@/lib/actions/tenants"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export default async function DashboardPage() {
   const session = await auth()
@@ -14,6 +17,8 @@ export default async function DashboardPage() {
   if (!session?.user) {
     redirect("/login")
   }
+
+  const tenants = await getTenants()
 
   return (
     <div className="space-y-6">
@@ -31,7 +36,14 @@ export default async function DashboardPage() {
             <CardDescription>参加中のグループ数</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">0</div>
+            <div className="text-3xl font-bold">{tenants.length}</div>
+            {tenants.length > 0 && (
+              <Link href="/dashboard/tenants">
+                <Button variant="link" className="px-0 mt-2">
+                  グループを見る
+                </Button>
+              </Link>
+            )}
           </CardContent>
         </Card>
 
