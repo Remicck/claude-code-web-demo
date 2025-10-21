@@ -5,7 +5,7 @@ test.describe('Home Page', () => {
     await page.goto('/');
 
     // Check if the Next.js logo is visible
-    const logo = page.getByAlt('Next.js logo');
+    const logo = page.getByAltText('Next.js logo');
     await expect(logo).toBeVisible();
   });
 
