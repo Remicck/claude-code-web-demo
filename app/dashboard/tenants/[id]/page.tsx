@@ -12,11 +12,10 @@ import Link from "next/link"
 import { format } from "date-fns"
 import { ja } from "date-fns/locale"
 
-export default async function TenantDetailPage({
-  params,
-}: {
-  params: { id: string }
+export default async function TenantDetailPage(props: {
+  params: Promise<{ id: string }>
 }) {
+  const params = await props.params
   const tenant = await getTenantById(params.id)
 
   if (!tenant) {

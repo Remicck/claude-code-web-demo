@@ -1,5 +1,6 @@
 import { auth, signOut } from "@/auth"
 import { redirect } from "next/navigation"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
 export default async function DashboardLayout({
@@ -21,24 +22,24 @@ export default async function DashboardLayout({
           <div className="flex items-center gap-6">
             <h1 className="text-lg font-semibold">割り勘管理</h1>
             <nav className="flex gap-6">
-              <a
+              <Link
                 href="/dashboard"
                 className="text-sm font-medium transition-colors hover:text-primary"
               >
                 ダッシュボード
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/dashboard/tenants"
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
               >
                 グループ
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/dashboard/payments"
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
               >
                 支払い
-              </a>
+              </Link>
             </nav>
           </div>
 
