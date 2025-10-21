@@ -2,7 +2,12 @@
 
 ## 概要
 
-SQLiteを使用したマルチテナント対応の割り勘管理システム。全てのIDにUUIDv7を使用。
+Turso (LibSQL) を使用したマルチテナント対応の割り勘管理システム。全てのIDにUUIDv7を使用。
+
+**Tursoについて:**
+- LibSQL: SQLiteの互換フォーク（サーバーレス環境向け）
+- エッジ配置可能なデータベース
+- 低レイテンシのグローバル配信
 
 ## ER図（概念）
 
@@ -338,8 +343,15 @@ npm run build
 ### ロールバック
 
 ```bash
-# データベースをリセット（開発環境のみ）
-rm -rf data/
+# Tursoでのデータベースリセット
+turso db destroy warikan-app
+turso db create warikan-app
+
+# 新しいトークンとURLで環境変数を更新
+turso db tokens create warikan-app
+turso db show warikan-app
+
+# マイグレーション再実行
 npm run db:migrate
 ```
 

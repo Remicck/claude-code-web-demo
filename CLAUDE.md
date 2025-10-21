@@ -11,7 +11,7 @@
 - **フレームワーク**: Next.js 15 (App Router)
 - **言語**: TypeScript
 - **認証**: NextAuth.js v5 (LINE Provider)
-- **データベース**: SQLite + Drizzle ORM
+- **データベース**: Turso (LibSQL) + Drizzle ORM
 - **UI**: Shadcn UI + Tailwind CSS v4
 - **ID管理**: UUIDv7
 
@@ -255,18 +255,30 @@ npm run build
 
 **問題**: マイグレーションが失敗する
 ```bash
-# 解決策1: データベースをリセット
-rm -rf data/
-npm run db:migrate
+# 解決策1: Tursoダッシュボードでデータベースをリセット
+turso db destroy warikan-app
+turso db create warikan-app
 
 # 解決策2: マイグレーションファイルを確認
 lib/db/migrations/
+
+# 解決策3: 環境変数を確認
+echo $DATABASE_URL
+echo $DATABASE_AUTH_TOKEN
 ```
 
 **問題**: 型エラーが出る
 ```typescript
 // schema.tsの変更後は必ず
 npm run db:generate
+```
+
+**問題**: Tursoへの接続エラー
+```bash
+# 環境変数が正しく設定されているか確認
+# .env.local に以下が必要:
+DATABASE_URL=libsql://xxx.turso.io
+DATABASE_AUTH_TOKEN=your-token
 ```
 
 ### 認証関連

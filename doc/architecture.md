@@ -80,10 +80,11 @@ SPAとして動作し、サーバーサイドレンダリング（SSR）とServe
 - JWTベースのセッション管理
 - サーバーサイド認証チェック
 
-**Drizzle ORM + SQLite**
+**Drizzle ORM + Turso**
 - TypeScript-firstのORM
 - Zero-cost抽象化
 - Relation query支援
+- Turso (LibSQL) によるサーバーレス対応
 
 ### インフラ
 
@@ -92,10 +93,10 @@ SPAとして動作し、サーバーサイドレンダリング（SSR）とServe
 - Hot Module Replacement (HMR)
 - TypeScript型チェック
 
-**本番環境（想定）:**
-- Vercel（推奨）またはDocker
-- PostgreSQL（SQLiteから移行）
-- Redis（セッションキャッシュ）
+**本番環境:**
+- Vercel（推奨）
+- Turso（LibSQL - サーバーレス対応）
+- Redis（セッションキャッシュ - 将来実装）
 
 ## ディレクトリ構造と責務
 
@@ -416,10 +417,10 @@ export const revalidate = 60 // 60秒ごとに再検証
 
 ### 現在のアーキテクチャの制限
 
-1. **SQLite**
-   - 単一ファイルベース
-   - 並行書き込みに制限
-   - 本番環境ではPostgreSQLへ移行推奨
+1. **Turso (LibSQL)**
+   - サーバーレス環境で動作
+   - 自動スケーリング対応
+   - 必要に応じてレプリカ追加可能
 
 2. **ファイルストレージ**
    - 画像等はまだ未対応
@@ -427,11 +428,11 @@ export const revalidate = 60 // 60秒ごとに再検証
 
 ### 将来の拡張計画
 
-**Phase 1: データベース移行**
-```typescript
-// PostgreSQL対応
-// drizzle.config.tsの変更のみでOK
-dialect: "postgresql"
+**Phase 1: データベーススケーリング**
+```bash
+# Tursoでのレプリカ追加
+turso db replicate warikan-app --location nrt
+turso db replicate warikan-app --location sjc
 ```
 
 **Phase 2: キャッシュレイヤー追加**
@@ -480,19 +481,19 @@ catch (error) {
 ```
 ローカルマシン
 ├── Next.js Dev Server (Turbopack)
-├── SQLite Database (data/sqlite.db)
+├── Turso Database (Cloud)
 └── LINE Login (Tunnel経由でテスト可能)
 ```
 
-### 本番環境（Vercel推奨）
+### 本番環境（Vercel）
 
 ```
 Vercel Platform
 ├── Next.js App (Serverless Functions)
 ├── Static Assets (CDN配信)
 └── External Services
-    ├── PostgreSQL (Vercel Postgres)
-    ├── Redis (Upstash)
+    ├── Turso (LibSQL Database)
+    ├── Redis (Upstash - 将来実装)
     └── LINE Login (Production Credentials)
 ```
 

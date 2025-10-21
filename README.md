@@ -17,7 +17,7 @@ LINEアカウントでログインできる、マルチテナント対応の割�
 - **フレームワーク**: Next.js 15 (App Router)
 - **言語**: TypeScript
 - **認証**: NextAuth.js v5 (Auth.js) with LINE Provider
-- **データベース**: SQLite (better-sqlite3)
+- **データベース**: Turso (LibSQL)
 - **ORM**: Drizzle ORM
 - **UI**: Shadcn UI + Tailwind CSS v4
 - **ID生成**: UUIDv7
@@ -42,7 +42,28 @@ LINEアカウントでログインできる、マルチテナント対応の割�
 npm install
 ```
 
-### 2. 環境変数の設定
+### 2. Tursoデータベースのセットアップ
+
+Turso CLIをインストールして、データベースを作成します：
+
+```bash
+# Turso CLIのインストール
+curl -sSfL https://get.tur.so/install.sh | bash
+
+# ログイン
+turso auth login
+
+# データベース作成
+turso db create warikan-app
+
+# 認証トークン取得
+turso db tokens create warikan-app
+
+# データベースURL確認
+turso db show warikan-app
+```
+
+### 3. 環境変数の設定
 
 `.env.local`ファイルを作成し、以下の環境変数を設定してください：
 
@@ -56,16 +77,20 @@ LINE_CHANNEL_SECRET=your-line-channel-secret
 
 # App URL
 NEXTAUTH_URL=http://localhost:3000
+
+# Turso Database
+DATABASE_URL=libsql://warikan-app-xxx.turso.io  # turso db show で確認
+DATABASE_AUTH_TOKEN=your-turso-auth-token        # turso db tokens create で取得
 ```
 
-### LINE Developersでのアプリ設定
+### 4. LINE Developersでのアプリ設定
 
 1. [LINE Developers Console](https://developers.line.biz/console/)にアクセス
 2. 新しいプロバイダーとチャネル（LINE Login）を作成
 3. Callback URLに `http://localhost:3000/api/auth/callback/line` を設定
 4. Channel IDとChannel Secretを`.env.local`に設定
 
-### 3. データベースのセットアップ
+### 5. データベースのマイグレーション
 
 ```bash
 # マイグレーションの生成（スキーマ変更時のみ）
@@ -75,7 +100,7 @@ npm run db:generate
 npm run db:migrate
 ```
 
-### 4. 開発サーバーの起動
+### 6. 開発サーバーの起動
 
 ```bash
 npm run dev
